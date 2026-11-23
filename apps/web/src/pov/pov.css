@@ -1,0 +1,823 @@
+.pov {
+  --pov-ink: #e6ece6;
+  --pov-soft: #97abae;
+  --pov-line: #2a4148;
+  --pov-mint: #b6edda;
+  max-width: 1540px;
+  width: 100%;
+  padding: 28px 32px 24px;
+  margin: 0 auto;
+  color: var(--pov-ink);
+  font-family: var(--font-body), sans-serif;
+}
+.pov button,
+.pov input,
+.pov select {
+  font: inherit;
+}
+.pov button {
+  cursor: pointer;
+}
+.pov button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.pov button:focus-visible,
+.pov input:focus-visible,
+.pov summary:focus-visible {
+  outline: 2px solid var(--pov-mint);
+  outline-offset: 4px;
+}
+.pov-heading {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  margin-bottom: 25px;
+}
+.pov-back {
+  background: none;
+  border: 0;
+  color: var(--pov-soft);
+  padding: 10px 0;
+}
+.pov-heading h1 {
+  font-size: clamp(28px, 3.5vw, 48px);
+  letter-spacing: -0.045em;
+  line-height: 1.1;
+  margin: 5px 0 0;
+  font-weight: 500;
+}
+.pov-eyebrow {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: var(--pov-soft);
+}
+.pov-build {
+  margin-left: auto;
+  border: 1px solid var(--pov-line);
+  padding: 8px 12px;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+}
+.pov-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 28px;
+  align-items: start;
+}
+.pov-stage {
+  position: relative;
+  min-width: 0;
+  height: min(72vh, 740px);
+  min-height: 490px;
+  background: #17252c;
+  border: 1px solid var(--pov-line);
+  overflow: hidden;
+}
+.pov-stage canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.pov-score {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  padding: 25px;
+  background: linear-gradient(#0b1a20d9, transparent);
+  pointer-events: none;
+}
+.pov-score > div {
+  min-width: 82px;
+}
+.pov-score span {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 0.17em;
+  font-weight: 600;
+}
+.pov-score strong {
+  font-size: 36px;
+  font-weight: 500;
+  line-height: 1.3;
+}
+.pov-score small {
+  font-size: 15px;
+  color: #a8b7b6;
+}
+.pov-pips {
+  display: flex !important;
+  gap: 6px;
+  margin-top: 4px;
+}
+.pov-rival .pov-pips {
+  justify-content: flex-end;
+}
+.pov-pips i {
+  width: clamp(10px, 1.6vmin, 18px);
+  height: clamp(10px, 1.6vmin, 18px);
+  border-radius: 50%;
+  border: 2px solid #ffffff55;
+  transition:
+    transform 0.35s cubic-bezier(0.2, 2.2, 0.4, 1),
+    background-color 0.2s;
+  transform: scale(0.7);
+}
+.pov-pips i.is-on {
+  background: #96e5d7;
+  border-color: #96e5d7;
+  transform: scale(1);
+}
+.pov-rival .pov-pips i.is-on {
+  background: #ffba93;
+  border-color: #ffba93;
+}
+.pov-rival {
+  text-align: right;
+}
+.pov-rival strong {
+  color: #ffba93;
+}
+.pov-opponent-status {
+  max-width: 145px;
+  margin: 4px 0 0 auto;
+  color: #f2cfb8;
+  font-size: 12px;
+  line-height: 1.4;
+}
+.pov-pace {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin: 22px 0;
+}
+.pov-pace button {
+  text-align: left;
+  padding: 12px;
+  border: 1px solid #34494c;
+  color: #b5c5c2;
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+}
+.pov-pace button[aria-pressed="true"] {
+  border-color: #96e5d7;
+  background: #183d3c;
+  color: #e3f8ee;
+}
+.pov-pace strong {
+  display: block;
+  font-size: 14px;
+}
+.pov-pace span {
+  display: block;
+  margin-top: 5px;
+  font-size: 11px;
+  line-height: 1.5;
+}
+.pov-feedback {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  /* Above the opponent's head, below the banner: never over the ball or the ring. */
+  place-items: start center;
+  padding-top: 31%;
+  pointer-events: none;
+  color: #b6edda;
+  font-size: clamp(34px, 7vmin, 84px);
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  animation: pov-contact 0.65s ease-out forwards;
+}
+/* Camera play: the stage is the whole window. The rest of the page stays
+   mounted but out of sight in a corner, because the camera's video element
+   lives there and a hidden video can stop delivering frames. */
+.pov.is-immersive .pov-stage {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  height: 100vh;
+  height: 100dvh;
+  min-height: 0;
+  max-height: none;
+  border: 0;
+}
+.pov.is-immersive .pov-panel {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  width: 2px;
+  height: 2px;
+  overflow: hidden;
+  opacity: 0.01;
+  pointer-events: none;
+}
+/* The menu button takes the court label's place at the top. */
+.pov.is-immersive .pov-court {
+  display: none;
+}
+.pov-menu-toggle {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  padding: 6px 14px;
+  background: #0b161bcc;
+  border: 1px solid #ffffff33;
+  color: #d7e2dd;
+  font: inherit;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.pov-menu-toggle:hover {
+  border-color: #96e5d7;
+}
+.pov-fullscreen {
+  left: auto;
+  right: 12px;
+  top: auto;
+  bottom: 12px;
+  transform: none;
+}
+.pov-mirror {
+  top: 46px;
+}
+/* Where to stand during setup: an outline over the camera's own picture. */
+.pov-silhouette {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  fill: none;
+  stroke: #ffd98a;
+  stroke-width: 0.7;
+  stroke-dasharray: 2.4 1.8;
+  stroke-linecap: round;
+  opacity: 0.75;
+  transition:
+    stroke 0.3s ease,
+    opacity 0.3s ease;
+}
+.pov-silhouette[data-ok="true"] {
+  stroke: #b6edda;
+  stroke-dasharray: none;
+  opacity: 0.9;
+}
+/* The camera's own picture over the court while setup is finding the player. */
+.pov-setup-view {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scaleX(-1);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+.pov-setup-view.is-on {
+  opacity: 0.6;
+}
+/* The instant of being hit: a red wash from the edges, driven per frame from the game loop. */
+.pov-impact {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 30%,
+    #e9502fcc 100%
+  );
+}
+.pov-feedback.is-hit {
+  color: #ffba93;
+  box-shadow: inset 0 0 90px #e97c5166;
+}
+@keyframes pov-contact {
+  0% {
+    opacity: 1;
+  }
+  65% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pov-feedback {
+    animation-duration: 0.3s;
+  }
+}
+.pov-court {
+  text-align: center;
+  line-height: 1.9;
+  color: #c6d0c9;
+}
+.pov-court b {
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  color: #a1bab9;
+}
+.pov-reticle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #d1e9e2a8;
+  font: 20px monospace;
+  pointer-events: none;
+}
+.pov-stage-bottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 60px 25px 22px;
+  background: linear-gradient(transparent, #102027ed);
+  text-align: center;
+  pointer-events: none;
+}
+.pov-live {
+  font-size: 9px;
+  letter-spacing: 0.13em;
+  border: 1px solid #8bbbad70;
+  padding: 5px 9px;
+  color: #c6f2e5;
+}
+.pov-stage-bottom p {
+  font-size: 13px;
+  margin: 13px auto 18px;
+  max-width: 390px;
+  min-height: 20px;
+}
+.pov-space {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  color: #c3dbd0;
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+}
+.pov-space i {
+  width: 80px;
+  height: 3px;
+  background: #b6edda;
+}
+.pov-panel {
+  padding: 2px 0;
+}
+.pov-panel h2 {
+  font-size: 29px;
+  font-weight: 500;
+  line-height: 1.08;
+  letter-spacing: -0.035em;
+  margin: 11px 0;
+}
+.pov-muted {
+  color: var(--pov-soft);
+  font-size: 13px;
+  line-height: 1.55;
+  margin: 12px 0 20px;
+}
+.pov-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--pov-line);
+  gap: 18px;
+  margin-bottom: 13px;
+}
+.pov-tabs button {
+  border: 0;
+  border-bottom: 2px solid transparent;
+  padding: 10px 0;
+  background: none;
+  color: var(--pov-soft);
+  font-size: 12px;
+}
+.pov-tabs button[aria-pressed="true"] {
+  border-color: var(--pov-mint);
+  color: var(--pov-mint);
+}
+.pov-caption {
+  font-size: 11px;
+  line-height: 1.55;
+  color: var(--pov-soft);
+  margin: 10px 0;
+}
+.pov-slider {
+  display: block;
+  margin: 14px 0;
+}
+.pov-slider > span {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  line-height: 1.4;
+}
+.pov-slider output {
+  color: var(--pov-soft);
+  font-variant-numeric: tabular-nums;
+}
+.pov-slider input {
+  display: block;
+  width: 100%;
+  height: 15px;
+  margin-top: 7px;
+  accent-color: var(--pov-mint);
+  cursor: pointer;
+}
+.pov-slider input:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.pov-camera-view {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+.pov-camera-view.is-near-edge {
+  outline-color: #f2cfb8;
+}
+.pov-view-toggle {
+  width: 100%;
+}
+.pov-view-label {
+  position: absolute;
+  top: 110px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 8px 12px;
+  background: #10252ee6;
+  border: 1px solid #96e5d755;
+  color: #b6edda;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+  pointer-events: none;
+}
+.pov details > summary {
+  font-size: 11px;
+  cursor: pointer;
+  list-style-position: inside;
+  color: var(--pov-ink);
+  padding: 12px 0;
+}
+.pov-flight {
+  border-top: 1px solid var(--pov-line);
+  margin-top: 17px;
+}
+.pov-flight .pov-slider {
+  margin: 8px 0;
+}
+.pov-primary,
+.pov-secondary {
+  border: 1px solid var(--pov-line);
+  padding: 11px 15px;
+  font-size: 12px !important;
+  background: #1b3038;
+  color: var(--pov-ink);
+}
+.pov-primary {
+  background: var(--pov-mint);
+  color: #142c2d;
+  border-color: var(--pov-mint);
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 17px;
+  font-weight: 600 !important;
+}
+.pov-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-top: 12px;
+}
+.pov-actions > .pov-secondary {
+  min-width: 100px;
+}
+.pov-text {
+  background: none;
+  border: 0;
+  color: var(--pov-soft);
+  font-size: 11px !important;
+  padding: 10px 0;
+}
+.pov-room {
+  margin-top: 20px;
+  border-top: 1px solid var(--pov-line);
+}
+.pov-room-row {
+  display: flex;
+  gap: 8px;
+}
+.pov input[type="number"],
+.pov-room-row input,
+.pov select {
+  background: #102128;
+  border: 1px solid var(--pov-line);
+  color: var(--pov-ink);
+  padding: 10px;
+  width: 100%;
+  min-width: 0;
+  border-radius: 0;
+}
+.pov-room-row input {
+  font-family: monospace;
+  letter-spacing: 0.1em;
+}
+.pov-footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 15px;
+  margin-top: 18px;
+  color: var(--pov-soft);
+  font-size: 11px;
+}
+.pov-footer p {
+  margin: 0;
+  line-height: 1.8;
+}
+.pov-footer b {
+  font-weight: 500;
+  color: var(--pov-ink);
+}
+.pov-footer span {
+  margin: 0 10px;
+}
+.pov-footer details {
+  max-width: 560px;
+}
+.pov-footer details > summary {
+  padding: 0;
+}
+.pov-diagnostics {
+  padding: 12px 0;
+}
+.pov-diagnostics p {
+  margin-bottom: 12px;
+}
+.pov-diagnostics select {
+  width: auto;
+  margin-left: 12px;
+}
+.pov-camera video {
+  width: 100%;
+  height: 135px;
+  object-fit: contain;
+  background: #0c1a20;
+  transform: scaleX(-1);
+  display: block;
+}
+.pov-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin: 12px 0;
+}
+.pov-fields label {
+  font-size: 10px;
+  color: var(--pov-soft);
+}
+.pov-fields input {
+  margin-top: 6px;
+}
+.pov-warning {
+  font-size: 11px;
+  color: #ffc391;
+}
+.pov-capture-idle {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  opacity: 0.01;
+  pointer-events: none;
+}
+@media (min-width: 1250px) {
+  .pov-stage {
+    height: 760px;
+    max-height: 85vh;
+  }
+  .pov-layout {
+    grid-template-columns: minmax(0, 1fr) 310px;
+    gap: 36px;
+  }
+}
+@media (max-width: 850px) {
+  .pov {
+    padding: 20px 18px;
+  }
+  .pov-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 25px;
+  }
+  .pov-stage {
+    height: 65vh;
+    min-height: 420px;
+    max-height: 700px;
+  }
+  .pov-panel {
+    max-width: 600px;
+    width: 100%;
+    margin: auto;
+  }
+  .pov-heading {
+    gap: 18px;
+  }
+  .pov-heading h1 {
+    font-size: 32px;
+  }
+  .pov-build {
+    font-size: 8px;
+    padding: 6px;
+  }
+  .pov-footer {
+    border-top: 1px solid var(--pov-line);
+    padding-top: 16px;
+  }
+  .pov-footer span {
+    margin: 0 4px;
+  }
+}
+@media (max-width: 450px) {
+  .pov {
+    padding: 15px 12px;
+  }
+  .pov-heading {
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+  .pov-back {
+    font-size: 11px !important;
+  }
+  .pov-heading h1 {
+    font-size: 27px;
+  }
+  .pov-eyebrow {
+    font-size: 8px;
+  }
+  .pov-build {
+    max-width: 64px;
+    text-align: center;
+    line-height: 1.5;
+  }
+  .pov-stage {
+    height: 60vh;
+    min-height: 400px;
+  }
+  .pov-score {
+    padding: 18px 14px;
+  }
+  .pov-score > div {
+    min-width: 60px;
+  }
+  .pov-score strong {
+    font-size: 29px;
+  }
+  .pov-score span {
+    font-size: 8px;
+  }
+  .pov-stage-bottom {
+    padding: 60px 16px 20px;
+  }
+  .pov-panel h2 {
+    font-size: 28px;
+  }
+}
+.pov-stage-actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 0 0 17px;
+  pointer-events: auto;
+}
+.pov-stage-actions .pov-secondary {
+  background: #18333be8;
+  border-color: #98c5b570;
+  padding: 9px 17px;
+}
+.pov h1,
+.pov h2 {
+  font-family: var(--font-body), sans-serif;
+  text-transform: none;
+}
+.pov-stage-bottom p {
+  margin-bottom: 12px;
+}
+@media (min-width: 851px) {
+  .pov-stage {
+    height: 650px;
+    max-height: 76vh;
+    min-height: 490px;
+  }
+}
+/* The whole stage carries the state as a colour at its edges, readable when
+   the words are not: amber while setting up, green when ready, blue on the
+   player's turn, orange for a warning, grey when paused. */
+.pov-stage::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  box-shadow: inset 0 0 0 0 transparent;
+  transition: box-shadow 0.3s ease;
+}
+.pov-stage[data-tone="setup"]::after {
+  box-shadow: inset 0 0 90px 6px #ffd27a55;
+}
+.pov-stage[data-tone="ready"]::after {
+  box-shadow: inset 0 0 90px 6px #9af0b455;
+}
+.pov-stage[data-tone="turn"]::after {
+  box-shadow: inset 0 0 90px 6px #8fe9ff55;
+}
+.pov-stage[data-tone="warn"]::after {
+  box-shadow: inset 0 0 90px 6px #ffb08a66;
+}
+.pov-stage[data-tone="paused"]::after {
+  box-shadow: inset 0 0 120px 10px #c8cdd066;
+}
+.pov-stage[data-tone="over"]::after {
+  box-shadow: inset 0 0 120px 10px #fff3c455;
+}
+/* The words a player across the room acts on: at most three, as large as the stage allows. */
+.pov-banner {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 16%;
+  display: grid;
+  justify-items: center;
+  gap: 0.12em;
+  pointer-events: none;
+  text-align: center;
+  font-size: clamp(40px, 9vmin, 104px);
+  line-height: 1;
+  color: #f4f1e6;
+  text-shadow: 0 4px 30px #000c;
+}
+.pov-banner strong {
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+.pov-banner span {
+  font-size: 0.34em;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  opacity: 0.9;
+}
+.pov-banner[data-tone="setup"] strong {
+  color: #ffd27a;
+}
+.pov-banner[data-tone="ready"] strong {
+  color: #9af0b4;
+}
+.pov-banner[data-tone="turn"] strong {
+  color: #8fe9ff;
+}
+.pov-banner[data-tone="warn"] strong {
+  color: #ffb08a;
+}
+.pov-banner[data-tone="paused"] strong {
+  color: #c8cdd0;
+}
+.pov-banner[data-tone="over"] strong {
+  color: #fff3c4;
+}
+/* The count before play: sized to be read from across the room. */
+.pov-countdown {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  color: #f4f1e6;
+  font-size: clamp(96px, 30vmin, 260px);
+  font-weight: 700;
+  line-height: 1;
+  text-shadow: 0 6px 40px #000a;
+}
+.pov-windup {
+  position: absolute;
+  left: 50%;
+  top: 22%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  background: #553627dc;
+  border: 1px solid #e0a080;
+  color: #ffe0cc;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  padding: 8px 10px;
+  pointer-events: none;
+}

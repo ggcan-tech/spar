@@ -1,0 +1,39 @@
+{
+  "date": "2026-11-08",
+  "scope": "local software and browser automation; no human camera evidence",
+  "suite": {
+    "total": 398,
+    "gestures": 122,
+    "netcode": 9,
+    "sim": 44,
+    "signal": 26,
+    "web": 197,
+    "newPovTests": 91
+  },
+  "browser": {
+    "twoClientsJoined": true,
+    "observedRoom": "POV711",
+    "afterPlayer2Throw": {
+      "player1SelfHp": 4,
+      "player2OpponentHp": 4
+    },
+    "player1SideStepMeters": 0.6,
+    "afterSecondThrowSelfHp": 4,
+    "sharedPauseObserved": true,
+    "mobileViewport": [
+      390,
+      844
+    ],
+    "mobileDocumentWidth": 390,
+    "mobileCanvasWidth": 364,
+    "cameraPermissionAccepted": false,
+    "cameraRecordingCreated": false
+  },
+  "notMeasured": [
+    "physical motion accuracy",
+    "motion-to-photon latency",
+    "real-device thermal/FPS",
+    "internet two-device match",
+    "human fun/retention"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "name": "spar",
+  "private": true,
+  "packageManager": "pnpm@10.13.1",
+  "scripts": {
+    "eval:motion": "tsx scripts/evaluate-motion.ts",
+    "dev": "pnpm -r --parallel --filter @spar/web --filter @spar/signal dev",
+    "test": "pnpm -r --workspace-concurrency=1 test",
+    "typecheck": "pnpm -r typecheck",
+    "build": "pnpm -r build",
+    "eval:spatial": "tsx scripts/evaluate-spatial.ts",
+    "spatial:baseline": "tsx scripts/export-spatial-baseline.ts"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.3",
+    "vitest": "^2.1.8",
+    "tsx": "^4.19.2"
+  }
+}

@@ -1,0 +1,35 @@
+/* Shared shell only: the arena maintains its own responsive layout. */
+.app { min-height: 100dvh; }
+.topbar { padding-top: calc(10px + env(safe-area-inset-top)); padding-left: calc(18px + env(safe-area-inset-left)); padding-right: calc(18px + env(safe-area-inset-right)); }
+.home { padding-top: calc(48px + env(safe-area-inset-top)); padding-left: calc(20px + env(safe-area-inset-left)); padding-right: calc(20px + env(safe-area-inset-right)); padding-bottom: calc(64px + env(safe-area-inset-bottom)); }
+.dojo, .page { padding-left: max(16px, env(safe-area-inset-left)); padding-right: max(16px, env(safe-area-inset-right)); padding-bottom: calc(20px + env(safe-area-inset-bottom)); }
+.panel, .panel__head, .panel__aside, .field, .kv dd { min-width: 0; }
+.panel__aside, .kv dd { overflow-wrap: anywhere; }
+.btn, .seg button, .linkish, summary { touch-action: manipulation; }
+.file-btn:focus-within { outline: 2px solid var(--blue); outline-offset: 3px; }
+.mobile-readiness { width: min(560px, 100%); text-align: left; color: var(--text-dim); font-size: 13px; }
+.mobile-readiness summary { cursor: pointer; padding: 12px 0; min-height: 44px; }
+.mobile-readiness summary:focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; }
+.mobile-readiness p { line-height: 1.6; }
+.mobile-readiness__offline { padding: 12px; border-left: 2px solid var(--amber); background: var(--bg-2); }
+@media (pointer: coarse) {
+  .btn--sm, .seg button, .linkish, details.sub summary { min-height: 44px; }
+  .linkish { padding: 10px 4px; }
+  input, select, textarea { font-size: 16px; }
+}
+@media (max-width: 520px) {
+  .topbar { gap: 8px; flex-wrap: wrap; }
+  .topbar__status { font-size: 11px; letter-spacing: .03em; }
+  .panel__head, .field { flex-wrap: wrap; }
+  .seg { max-width: 100%; flex-wrap: wrap; }
+  .drill { grid-template-columns: minmax(0, 1fr); }
+  .drill__prompt { font-size: 36px; overflow-wrap: anywhere; }
+  .ticker li { flex-wrap: wrap; }
+  .kv { grid-template-columns: minmax(0, .7fr) minmax(0, 1fr); }
+  .stage__sub { font-size: 14px; letter-spacing: .06em; }
+  .stage__big { font-size: clamp(34px, 12vw, 64px); }
+  .stage__overlay { padding: 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
+}

@@ -1,0 +1,58 @@
+{
+  "id": "/",
+  "name": "SPAR — Boxing",
+  "short_name": "SPAR",
+  "description": "First-person boxing played with your body: the camera follows your fists and your head, you punch, slip, duck and block. A connection is needed the first time, to load body tracking.",
+  "start_url": "/?box=1",
+  "scope": "/",
+  "display": "fullscreen",
+  "background_color": "#0e0f13",
+  "theme_color": "#0e0f13",
+  "lang": "en",
+  "categories": [
+    "games",
+    "sports"
+  ],
+  "icons": [
+    {
+      "src": "/icons/spar-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/spar-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/spar.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "display_override": [
+    "fullscreen",
+    "standalone"
+  ],
+  "orientation": "any",
+  "shortcuts": [
+    {
+      "name": "Boxing",
+      "short_name": "Boxing",
+      "url": "/?box=1"
+    },
+    {
+      "name": "Dodgeball duel",
+      "short_name": "Duel",
+      "url": "/?pov=1"
+    },
+    {
+      "name": "Shadow boxing (older mode)",
+      "short_name": "Older",
+      "url": "/"
+    }
+  ]
+}

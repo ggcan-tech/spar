@@ -1,0 +1,23 @@
+{
+  "schema": "spar-control-study-v1",
+  "mode": "dodge-bot",
+  "input": "keyboard",
+  "touchPreviewUsed": true,
+  "status": "complete",
+  "result": "loss",
+  "simulatedSeconds": 16.583333333333332,
+  "shots": 1,
+  "hits": 0,
+  "dodges": 2,
+  "received": 8,
+  "preference": "again",
+  "pausedMs": 0,
+  "maxPoseAgeMs": 0,
+  "sessionStarted": "2026-11-08T22:40:58.817Z",
+  "limits": [
+    "Local bot only",
+    "Throws use existing punch recognition",
+    "No human accuracy or online latency measurement",
+    "No video or landmarks included"
+  ]
+}

@@ -1,0 +1,14 @@
+node_modules
+dist
+.DS_Store
+*.log
+.vite
+apps/web/public/models
+recordings/
+
+# Motion capture sources: large, fetched once, never shipped as they are.
+tools/anim/source/
+
+# A player's saved camera recordings, for playing back locally: never committed.
+apps/web/public/_replay/
+apps/web/public/box/voice/

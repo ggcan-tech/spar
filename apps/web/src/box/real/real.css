@@ -1,0 +1,186 @@
+/* The real exchange: in a round there is nothing to read. */
+.real-stage canvas {
+  transition: filter 0.4s ease;
+}
+/* The player's own state: the edges darken as they are worn down, and close in when hurt. */
+.real-vision {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  background: radial-gradient(ellipse at 50% 46%, transparent 38%, #000000b0 78%, #000000ee 100%);
+}
+/* Two thin bars a side, for those who want them: health over breath. */
+.real-bars {
+  position: absolute;
+  top: max(10px, 1.6vh);
+  left: max(14px, 2vw);
+  right: max(14px, 2vw);
+  display: flex;
+  justify-content: space-between;
+  gap: 30vw;
+  pointer-events: none;
+}
+.real-bars div {
+  flex: 1;
+  display: grid;
+  gap: 3px;
+}
+.real-bars i {
+  display: block;
+  height: clamp(5px, 1.2vmin, 11px);
+  background: #6ff0d8;
+  transition: width 0.18s ease-out;
+}
+.real-bars i[data-kind="breath"] {
+  height: clamp(3px, 0.7vmin, 6px);
+  background: #f4e27a;
+}
+.real-bars div[data-side="foe"] i {
+  margin-left: auto;
+  background: #ffb07a;
+}
+.real-bars div[data-side="foe"] i[data-kind="breath"] {
+  background: #f4e27a;
+}
+.real-corner .box-numbers {
+  margin: 0.6vh 0;
+}
+/* The card after a bout: round by round. */
+.real-card strong[data-tone="good"] {
+  color: #8ff5d4;
+}
+.real-card strong[data-tone="bad"] {
+  color: #ff6b78;
+}
+.real-card table {
+  margin-top: 1vh;
+  border-collapse: collapse;
+  font-size: clamp(14px, min(3.6vh, 2.8vw), 34px);
+  font-variant-numeric: tabular-nums;
+}
+.real-card th {
+  padding: 0.3vh 1.2vw;
+  font-size: clamp(10px, 1.7vmin, 17px);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #b9c7c1;
+}
+.real-card td {
+  padding: 0.5vh 1.2vw;
+  font-weight: 700;
+  text-align: center;
+  text-shadow: 0 2px 10px #000c;
+}
+.real-card u {
+  text-decoration: none;
+  margin-top: 0.8vh;
+  font-size: clamp(15px, min(4.2vh, 3.4vw), 42px);
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: #8ff5d4;
+}
+
+/* A step too near the screen: three ropes rise into the bottom of the view. */
+.real-ropes {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 30vh;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(40%);
+  transition:
+    opacity 0.2s ease,
+    transform 0.25s ease-out;
+  background: linear-gradient(transparent, #05080c99);
+}
+.real-ropes[data-on="true"] {
+  transform: none;
+}
+.real-ropes i {
+  position: absolute;
+  left: -2vw;
+  right: -2vw;
+  height: clamp(8px, 2.2vh, 22px);
+  border-radius: 99px;
+  background: linear-gradient(#f4f0e6, #b9b3a4);
+  box-shadow: 0 6px 18px #000a;
+}
+.real-ropes i:nth-child(1) {
+  bottom: 22vh;
+}
+.real-ropes i:nth-child(2) {
+  bottom: 12vh;
+  background: linear-gradient(#ee4257, #a81b2d);
+}
+.real-ropes i:nth-child(3) {
+  bottom: 2vh;
+}
+/* The corner while a punch is shown again: the picture is the lesson, the words stand clear of it. */
+.real-corner.is-replay {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 3vh 5vw 4vh;
+  background: linear-gradient(#05080cc0 0%, #05080c00 20%, #05080c00 62%, #05080ce0 100%);
+}
+.real-corner.is-replay strong {
+  margin-bottom: auto;
+  font-size: clamp(18px, min(5vh, 4vw), 48px);
+  letter-spacing: 0.06em;
+  color: #c7d4cf;
+}
+.real-corner .real-cause {
+  font-size: clamp(20px, min(6.4vh, 5vw), 62px);
+  color: #f1f5f2;
+}
+.real-corner .box-numbers[hidden] {
+  display: none;
+}
+.real-stop {
+  pointer-events: auto;
+  margin-top: 1vh;
+  opacity: 0.8;
+}
+.real-device {
+  justify-content: center;
+}
+
+/* The card's first line says what the numbers are: clean punches of those thrown. */
+.real-card caption {
+  caption-side: bottom;
+  padding-top: 0.8vh;
+  font-size: clamp(10px, 1.7vmin, 17px);
+  color: #b9c7c1;
+}
+
+/* The test room: numbers about the camera and the body, small, out of the way. */
+.real-room {
+  position: absolute;
+  left: max(12px, 1.4vw);
+  top: max(12px, 1.6vh);
+  display: grid;
+  gap: 0.5vh;
+  max-width: min(64vw, 760px);
+  padding: 1.2vh 1.2vw;
+  background: #05080cb8;
+  border: 1px solid #2b3a44;
+  font-size: clamp(11px, 1.9vmin, 18px);
+  font-variant-numeric: tabular-nums;
+  color: #dfe8e4;
+  text-align: left;
+}
+.real-room button {
+  justify-self: start;
+  margin-top: 0.6vh;
+  padding: 0.5vh 0.8vw;
+  background: #0f1c24;
+  border: 1px solid #3b4a55;
+  color: #dfe8e4;
+  font: inherit;
+  cursor: pointer;
+}
